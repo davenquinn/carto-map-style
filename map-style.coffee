@@ -17,7 +17,7 @@ class MapStyle
     catch
       return {}
 
-  @stylesheetDir: path.join(process.env.REPO_DIR,'map-styles','styles')
+  @stylesheetDir: process.env.MAPNIK_STYLES
   srs: null
   constructor: (opts={})->
     @Layer ?= []
@@ -50,7 +50,10 @@ class MapStyle
       console.log "Checking path #{id} for stylesheet"
       sourceFile = id if existsSync id
 
-    sourceFile ?= path.join @constructor.stylesheetDir, "#{id}.mss"
+    try
+      sourceFile ?= path.join @constructor.stylesheetDir, "#{id}.mss"
+    catch
+      throw "Couldn't find stylesheet directory, maybe it isn't defined?"
 
     {name} = path.parse sourceFile
     data = readFileSync(sourceFile,'utf8')
