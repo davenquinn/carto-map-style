@@ -1,0 +1,17 @@
+{
+  "name": "carto-map-style",
+  "version": "1.0.0",
+  "description": "A programmatic API to CartoCSS",
+  "main": "index.coffee",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "callsite": "^1.0.0",
+    "carto": "^0.18.2",
+    "js-yaml": "^3.10.0",
+    "underscore": "^1.8.3"
+  }
+}
