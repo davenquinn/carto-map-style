@@ -32,8 +32,8 @@ class MapStyle
         lyr.id = id
       else
         lyr = id
+      lyr.name ?= lyr.id
       lyr.srs ?= @srs
-      console.log lyr
       return lyr
 
     ### Add computed styles to stylesheet ###
