@@ -32,6 +32,7 @@ class MapStyle
         lyr.id = id
       else
         lyr = id
+      console.log lyr
       lyr.name ?= lyr.id
       lyr.srs ?= @srs
       return lyr
@@ -42,6 +43,12 @@ class MapStyle
       if _.isString style
         style = @__getNamedStyle style
       @Stylesheet.push style
+
+    delete opts.layers
+    delete opts.styles
+
+    for k,v in opts
+      @[k] = v
 
   __getNamedStyle: (id)=>
     sourceFile = null
@@ -62,12 +69,26 @@ class MapStyle
   toXml: =>
     cartoRenderer.render @
 
+class CartoStyle
+  constructor: (fn)->
+    dirname = path.dirname(fn)
+    obj = JSON.parse readFileSync(fn, 'utf8')
+    @base = dirname
+    for k,v of obj
+      @[k] = v
+    @Stylesheet.forEach (d,i)=>
+      if _.isString d
+        sourceFile = path.join dirname, d
+        data = readFileSync(sourceFile,'utf8')
+        @Stylesheet[i] = {id: d, data}
+
 ## Database Layer ##
 class PostGISLayer
   defaultDatasource:
     dbname: "Naukluft"
     geometry_field: "geometry"
     host: "localhost"
+    port: 5432
     table: null
     type: 'postgis'
     srid: null
@@ -81,4 +102,4 @@ class PostGISLayer
     # Convert to subquery format
     @Datasource.table = "(#{sqltext}) AS a"
 
-module.exports = {MapStyle,PostGISLayer}
+module.exports = {MapStyle,PostGISLayer,CartoStyle}
