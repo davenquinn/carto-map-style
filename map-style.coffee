@@ -98,6 +98,7 @@ class PostGISLayer
     @Datasource = opts
     if sqltext.query?
       # We passed a pg-promise prepared statement
+      # NOTE: newer versions of pgp don't have this defined.
       sqltext = sqltext.query
     # Convert to subquery format
     @Datasource.table = "(#{sqltext}) AS a"
